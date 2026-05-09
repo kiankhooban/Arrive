@@ -48,6 +48,25 @@ const Compass = (p) => (
   />
 );
 
+const PROVINCE_LABELS = {
+  on: 'Ontario',
+  bc: 'British Columbia',
+  other: 'Other province',
+};
+
+const STATUS_LABELS = {
+  refugee_claimant: 'Refugee claimant',
+  permanent_resident: 'Permanent resident',
+  study_work_permit: 'Study/work permit',
+  other: 'Other status',
+};
+
+const NEED_LABELS = {
+  housing: 'Housing',
+  legal_aid: 'Legal aid',
+  employment: 'Employment',
+};
+
 /* ---------- Resource lookup map ---------- */
 const resourceById = Object.fromEntries(resources.map((r) => [r.id, r]));
 
@@ -183,6 +202,35 @@ function InputBar({ value, onChange, onSubmit, disabled }) {
   );
 }
 
+function ContextChips({ province, status, needs }) {
+  const chips = [
+    PROVINCE_LABELS[province] ?? province,
+    STATUS_LABELS[status] ?? status,
+    ...needs.map((need) => NEED_LABELS[need] ?? need),
+  ].filter(Boolean);
+
+  return (
+    <section
+      className="border-b border-stone-200 bg-stone-50"
+      aria-label="Current matching context"
+    >
+      <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-2 px-4 py-3 sm:px-6">
+        <span className="mr-1 text-xs font-medium uppercase tracking-wide text-gray-500">
+          Matching for
+        </span>
+        {chips.map((chip) => (
+          <span
+            key={chip}
+            className="inline-flex min-h-8 items-center rounded-full border border-stone-200 bg-white px-3 py-1 text-sm font-medium text-neutral-900"
+          >
+            {chip}
+          </span>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 /* ---------- ChatBox ----------
    Props:
      province   — from onboarding context
@@ -307,6 +355,8 @@ export default function ChatBox({
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
+      <ContextChips province={province} status={status} needs={needs} />
+
       {/* Message list */}
       <main
         ref={scrollRef}
@@ -405,4 +455,3 @@ export default function ChatBox({
     </div>
   );
 }
-
