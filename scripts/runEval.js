@@ -22,8 +22,10 @@ const NEED_TO_CATEGORY = {
   legal_aid: 'legal_aid',
   employment: 'employment',
 };
+const UNSUPPORTED_NEEDS = new Set(['healthcare', 'education', 'health', 'medical']);
 
 function filterResources(province, status, needs = []) {
+  if (needs.length > 0 && needs.every((n) => UNSUPPORTED_NEEDS.has(n))) return [];
   const provinceCode = PROVINCE_CODE[province] ?? province?.toUpperCase();
   const wantedCategories = needs.map((n) => NEED_TO_CATEGORY[n] ?? n);
 

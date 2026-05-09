@@ -1,3 +1,7 @@
+// Needs that are explicitly out of scope — return empty pool so the AI
+// hits rule 3 and directs the user to 211 rather than improvising.
+const UNSUPPORTED_NEEDS = new Set(['healthcare', 'education', 'health', 'medical']);
+
 // Onboarding province IDs → resource schema province codes
 const PROVINCE_CODE = { on: 'ON', bc: 'BC' };
 
@@ -21,6 +25,12 @@ const NEED_TO_CATEGORY = {
  * @returns {Array} up to 8 resources
  */
 export function filterResources(resources, province, status, needs = []) {
+  // If every requested need is explicitly out of scope, return nothing —
+  // the empty filteredResources forces the AI to invoke rule 3 (call 211).
+  if (needs.length > 0 && needs.every((n) => UNSUPPORTED_NEEDS.has(n))) {
+    return [];
+  }
+
   const provinceCode = PROVINCE_CODE[province] ?? province?.toUpperCase();
   const wantedCategories = needs.map((n) => NEED_TO_CATEGORY[n] ?? n);
 
