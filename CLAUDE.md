@@ -17,6 +17,7 @@ with PLAN.md, PLAN.md wins.
 - NEVER change the resource schema once locked
 - NEVER use VITE_ prefix for sensitive credentials (Vite inlines those into the client bundle)
 - Commit after every meaningful change
+- NEVER include "Co-Authored-By" lines in any git commit message
 
 ## Tech Stack
 - React + Vite
