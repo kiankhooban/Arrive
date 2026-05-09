@@ -240,18 +240,6 @@
     "notes": "Toll-free: 1-877-736-9406. TTY: 1-800-855-0511. Toronto: 180 Dundas St W, Suite 1509 M5G 1Z8; Ottawa: 1 Nicholas St, Suite 402. Mon–Fri 9 am–5 pm. No walk-ins — intake by online form submission only. Funded by Legal Aid Ontario."
   },
   {
-    "id": "on-legal-008",
-    "name": "Hamilton Community Legal Clinic — Immigration Services",
-    "description": "Free legal information, advice, and representation for low-income Hamilton residents on immigration, refugee matters, housing, social assistance, and employment law.",
-    "provinces": ["ON"],
-    "eligible_statuses": [],
-    "categories": ["legal_aid"],
-    "url": "https://www.hamiltonlegal.ca",
-    "phone": "905-527-4572",
-    "last_verified": "2026-05-09",
-    "notes": "Address: 100 Main St E, Suite 203, Hamilton L8N 3W7. Mon–Tue, Thu–Fri 8:30 am–4 pm; Wed 8:30 am–12 noon. No fee. Additional languages available on request. For LAO refugee/immigration services in Hamilton specifically: 905-528-0134."
-  },
-  {
     "id": "bc-legal-001",
     "name": "Legal Aid BC (Legal Services Society) — Immigration & Refugee Line",
     "description": "Free legal information, advice, and representation province-wide for low-income British Columbians facing refugee claims, detention reviews, deportation matters, and IRB hearings.",
