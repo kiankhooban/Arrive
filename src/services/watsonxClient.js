@@ -57,8 +57,8 @@ export async function sendMessage(payload, onChunk) {
         continue;
       }
 
-      // watsonx SSE payload: { results: [{ generated_text: "..." }] }
-      const chunk = parsed?.results?.[0]?.generated_text ?? '';
+      // watsonx chat SSE payload (OpenAI-compatible): { choices: [{ delta: { content: "..." } }] }
+      const chunk = parsed?.choices?.[0]?.delta?.content ?? '';
       if (chunk) onChunk(chunk);
     }
   }
@@ -69,7 +69,7 @@ export async function sendMessage(payload, onChunk) {
     if (raw && raw !== '[DONE]') {
       try {
         const parsed = JSON.parse(raw);
-        const chunk = parsed?.results?.[0]?.generated_text ?? '';
+        const chunk = parsed?.choices?.[0]?.delta?.content ?? '';
         if (chunk) onChunk(chunk);
       } catch {
         // ignore malformed trailing data
