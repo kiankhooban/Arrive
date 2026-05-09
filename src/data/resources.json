@@ -138,7 +138,7 @@
     "provinces": ["BC"],
     "eligible_statuses": [],
     "categories": ["housing"],
-    "url": "https://successbc.ca/services/",
+    "url": "https://successbc.ca/find-a-service/",
     "phone": "604-684-1628",
     "last_verified": "2026-05-09",
     "notes": "Head office: 28 West Pender St, Vancouver V6B 1R6. Subsidized housing buildings accessed via BC Housing Registry for low-income individuals, couples, families, and seniors. Settlement and housing support services open to refugee claimants and newcomers of all statuses. Languages: Cantonese, Mandarin, Punjabi, and more."
@@ -454,41 +454,5 @@
     "phone": "604-684-1628",
     "last_verified": "2026-05-09",
     "notes": "Multiple service centre locations across Metro Vancouver, Surrey, Richmond, Tri-Cities, and Fort St. John. Primarily serves temporary residents (work/study permit holders), naturalized citizens, and certain individuals without valid permits. Does not primarily target refugee claimants — see MOSAIC RESS (bc-employment-002) for refugee-specific employment services."
-  },
-  {
-    "id": "qc-housing-001",
-    "name": "PRAIDA — Regional Reception and Integration Program for Asylum Seekers",
-    "description": "Public program providing emergency housing, social assistance, settlement support, and psychosocial accompaniment for newly arrived asylum seekers in Quebec.",
-    "provinces": ["QC"],
-    "eligible_statuses": ["refugee_claimant"],
-    "categories": ["housing"],
-    "url": "https://www.ciusss-centresudmtl.gouv.qc.ca/services/services-aux-personnes-immigrantes/praida",
-    "phone": "514-737-2443",
-    "last_verified": "2026-05-09",
-    "notes": "Managed by the CIUSSS du Centre-Sud-de-l'Île-de-Montréal. Head office: 35 Port-Royal St East, Montreal. Main entry point for asylum seekers in Quebec. Provides temporary housing (often in hotels), assistance with the Asylum Seekers Assistance Program (social assistance checks), and access to initial healthcare. Services in French and English; interpreters available."
-  },
-  {
-    "id": "qc-employment-001",
-    "name": "PROMIS — Promotion, Integration, New Society",
-    "description": "Montreal-based community organization offering employment, French language training, and social integration services to immigrants and refugees, including regional settlement support.",
-    "provinces": ["QC"],
-    "eligible_statuses": [],
-    "categories": ["employment"],
-    "url": "https://www.promis.qc.ca",
-    "phone": "514-270-9386",
-    "last_verified": "2026-05-09",
-    "notes": "Address: 3333 Côte-Sainte-Catherine Rd, Montreal, QC H3T 1C8. Free services funded by MIFI and IRCC. Offers: skills assessment, resume writing, interview preparation, and employer matching. Specialized in helping newcomers move and find work outside of Montreal (regionalization). All immigration statuses accepted."
-  },
-  {
-    "id": "qc-food-001",
-    "name": "The Depot Community Food Centre",
-    "description": "Community food centre offering free groceries, community meals, and adapted programs for newcomers and low-income residents of NDG and surrounding areas.",
-    "provinces": ["QC"],
-    "eligible_statuses": [],
-    "categories": ["food"],
-    "url": "https://depotcentrecommunautaire.ca",
-    "phone": "514-489-4189",
-    "last_verified": "2026-05-09",
-    "notes": "Address: 6900 Fielding Ave, Montreal, QC H3X 1V1. Food market and weekly community meals. No proof of status required. Note: Primarily serves the Notre-Dame-de-Grâce (NDG) area and neighboring municipalities. Also offers cooking workshops and gardening programs."
   }
 ]
