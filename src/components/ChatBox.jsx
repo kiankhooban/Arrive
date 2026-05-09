@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { UserBubble, AIBubble, LoadingBubble } from './MessageBubble';
 import DemoFallback from './DemoFallback';
 import resources from '../data/resources.json';
+import { filterResources } from '../utils/filterResources';
 
 /* ---------- Icons ---------- */
 function Icon({ d, size = 20, stroke = 1.75, className = '' }) {
@@ -284,6 +285,7 @@ export default function ChatBox({
     setStreamingText('');
 
     const history = buildHistory();
+    const requestResources = filterResources(resources, province, status, needs, text);
 
     // 15-second timeout guard
     let timedOut = false;
@@ -293,7 +295,13 @@ export default function ChatBox({
       setStreamingText('');
       setMessages((prev) => [
         ...prev,
-        { id: Date.now(), role: 'ai', error: true, rawText: '' },
+        {
+          id: Date.now(),
+          role: 'ai',
+          error: true,
+          rawText: '',
+          filteredResources: requestResources,
+        },
       ]);
     }, 15000);
 
@@ -302,7 +310,14 @@ export default function ChatBox({
       let firstChunk = true;
 
       await sendMessage(
-        { message: text, history, province, status, needs, filteredResources },
+        {
+          message: text,
+          history,
+          province,
+          status,
+          needs,
+          filteredResources: requestResources,
+        },
         (chunk) => {
           if (timedOut) return;
           if (firstChunk) {
@@ -338,7 +353,13 @@ export default function ChatBox({
       setStreamingText('');
       setMessages((prev) => [
         ...prev,
-        { id: Date.now(), role: 'ai', error: true, rawText: '' },
+        {
+          id: Date.now(),
+          role: 'ai',
+          error: true,
+          rawText: '',
+          filteredResources: requestResources,
+        },
       ]);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -385,7 +406,7 @@ export default function ChatBox({
                   return (
                     <DemoFallback
                       key={msg.id}
-                      filteredResources={filteredResources}
+                      filteredResources={msg.filteredResources ?? filteredResources}
                       onRetry={handleRetry}
                     />
                   );

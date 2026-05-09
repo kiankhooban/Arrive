@@ -6,6 +6,7 @@
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { filterResources } from '../src/utils/filterResources.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const resources = JSON.parse(
@@ -14,41 +15,9 @@ const resources = JSON.parse(
 
 const BASE_URL = process.argv[2] ?? 'http://localhost:3000';
 
-/* ---------- filterResources (mirrors src/utils/filterResources.js) ---------- */
-const PROVINCE_CODE = { on: 'ON', bc: 'BC' };
-const NEED_TO_CATEGORY = {
-  housing: 'housing',
-  legal: 'legal_aid',
-  legal_aid: 'legal_aid',
-  employment: 'employment',
-};
-const UNSUPPORTED_NEEDS = new Set(['healthcare', 'education', 'health', 'medical']);
-
-function filterResources(province, status, needs = []) {
-  if (needs.length > 0 && needs.every((n) => UNSUPPORTED_NEEDS.has(n))) return [];
-  const provinceCode = PROVINCE_CODE[province] ?? province?.toUpperCase();
-  const wantedCategories = needs.map((n) => NEED_TO_CATEGORY[n] ?? n);
-
-  let pool = resources.filter(
-    (r) => provinceCode && r.provinces.includes(provinceCode)
-  );
-  pool = pool.filter(
-    (r) => r.eligible_statuses.length === 0 || r.eligible_statuses.includes(status)
-  );
-
-  const priority = pool.filter((r) =>
-    r.categories.some((c) => wantedCategories.includes(c))
-  );
-  const rest = pool.filter(
-    (r) => !r.categories.some((c) => wantedCategories.includes(c))
-  );
-
-  return [...priority, ...rest].slice(0, 8);
-}
-
 /* ---------- Call /api/chat and collect full streamed text ---------- */
 async function callChat({ province, status, needs, message, filteredResources }) {
-  const fr = filteredResources ?? filterResources(province, status, needs);
+  const fr = filteredResources ?? filterResources(resources, province, status, needs, message);
 
   const res = await fetch(`${BASE_URL}/api/chat`, {
     method: 'POST',
