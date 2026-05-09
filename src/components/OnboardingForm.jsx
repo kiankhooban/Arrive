@@ -246,7 +246,7 @@ const PROVINCES = [
   {
     id: 'other',
     title: 'Somewhere else in Canada',
-    description: "We'll match you with national resources too",
+    description: "We'll connect you with national support lines like 211.",
     icon: <Globe size={22} />,
   },
 ];

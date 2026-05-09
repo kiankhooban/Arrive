@@ -105,7 +105,7 @@ function EmptyState({ onSuggestion }) {
         <Compass size={26} stroke={2} />
       </span>
       <h2 className="mt-6 text-2xl font-semibold tracking-tight text-neutral-900 sm:text-3xl">
-        Hi — tell me what you need help with and I'll find verified resources for your situation.
+        Hi — I'm here to help you find verified housing, legal aid, and employment support in Canada. What do you need help with today?
       </h2>
       <p className="mt-3 text-base leading-relaxed text-gray-500">
         You can write in plain language. Nothing you share is logged or sent to a government agency.
