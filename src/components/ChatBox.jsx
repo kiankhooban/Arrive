@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { UserBubble, AIBubble, LoadingBubble } from './MessageBubble';
 import DemoFallback from './DemoFallback';
 import resources from '../data/resources.json';
@@ -44,6 +45,18 @@ const Compass = (p) => (
       <>
         <path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z" />
         <circle cx="12" cy="12" r="10" />
+      </>
+    }
+  />
+);
+
+const Edit = (p) => (
+  <Icon
+    {...p}
+    d={
+      <>
+        <path d="M12 20h9" />
+        <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
       </>
     }
   />
@@ -227,6 +240,13 @@ function ContextChips({ province, status, needs }) {
             {chip}
           </span>
         ))}
+        <Link
+          to="/onboard"
+          className="ml-auto inline-flex min-h-8 items-center gap-1.5 rounded-lg px-2 py-1 text-sm font-medium text-teal-700 transition hover:bg-teal-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-700 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-50"
+        >
+          <Edit size={14} />
+          Change answers
+        </Link>
       </div>
     </section>
   );
@@ -286,6 +306,26 @@ export default function ChatBox({
 
     const history = buildHistory();
     const requestResources = filterResources(resources, province, status, needs, text);
+
+    if (requestResources.length === 0) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now(),
+          role: 'ai',
+          rawText: '',
+          blocks: [
+            {
+              type: 'text',
+              content:
+                "I don't have verified resources for that situation yet. Please call 211 for free local support.",
+            },
+          ],
+        },
+      ]);
+      setChatStatus('idle');
+      return;
+    }
 
     // 15-second timeout guard
     let timedOut = false;

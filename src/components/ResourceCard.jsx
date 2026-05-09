@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 /* ---------- Inline SVG icon primitive ---------- */
 function Icon({ d, size = 20, stroke = 1.75, className = '' }) {
   return (
@@ -53,6 +55,10 @@ const Phone = (p) => (
   />
 );
 
+const ChevronDown = (p) => (
+  <Icon {...p} d={<path d="m6 9 6 6 6-6" />} />
+);
+
 /* ---------- Category label map ---------- */
 const CATEGORY_LABELS = {
   housing: 'Housing',
@@ -94,7 +100,16 @@ function CategoryPill({ category }) {
    Props match the locked resource schema:
      id, name, description, categories, url, phone, last_verified, notes
 */
-export default function ResourceCard({ name, categories = [], description, phone, url, last_verified }) {
+export default function ResourceCard({
+  name,
+  categories = [],
+  description,
+  phone,
+  url,
+  last_verified,
+  notes,
+}) {
+  const [showDetails, setShowDetails] = useState(false);
   // Build accessible label per spec
   const categoryLabel = categories.map((c) => CATEGORY_LABELS[c] ?? c).join(', ');
   const verifiedFormatted = new Date(last_verified + 'T12:00:00').toLocaleDateString('en-CA', {
@@ -130,6 +145,31 @@ export default function ResourceCard({ name, categories = [], description, phone
       <p className="mt-3 text-sm leading-relaxed text-gray-500 sm:text-base">
         {description}
       </p>
+
+      {notes && (
+        <div className="mt-4">
+          <button
+            type="button"
+            aria-expanded={showDetails}
+            onClick={() => setShowDetails((open) => !open)}
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-sm font-medium text-neutral-900 transition hover:border-stone-300 hover:bg-stone-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-700 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          >
+            Details
+            <ChevronDown
+              size={14}
+              className={[
+                'transition',
+                showDetails ? 'rotate-180' : '',
+              ].join(' ')}
+            />
+          </button>
+          {showDetails && (
+            <p className="mt-3 rounded-lg border border-stone-200 bg-stone-50 p-3 text-sm leading-relaxed text-gray-500">
+              {notes}
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Footer row: phone + visit button */}
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-stone-200 pt-4">
