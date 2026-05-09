@@ -243,12 +243,6 @@ const PROVINCES = [
     description: 'Vancouver, Surrey, Victoria, and other cities',
     icon: <MapPin size={22} />,
   },
-  {
-    id: 'other',
-    title: 'Somewhere else in Canada',
-    description: "We'll connect you with national support lines like 211.",
-    icon: <Globe size={22} />,
-  },
 ];
 
 const NEEDS = [
