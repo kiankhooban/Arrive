@@ -1,16 +1,48 @@
-# React + Vite
+# Arrive
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AI-powered settlement service finder for refugees and immigrants in Canada.
 
-Currently, two official plugins are available:
+## What it does
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Arrive asks three quick questions — province, immigration status, and what you need help with — then uses IBM watsonx.ai to match you with verified Canadian settlement services and answer follow-up questions in plain language. Every resource recommendation links back to a manually verified entry with a visible last-verified date, so nothing is hallucinated.
 
-## React Compiler
+Built for the IBM Z × UNSA Sheridan Hackathon 2026. Aligned with **UN SDG 10 — Reduced Inequalities**.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech stack
 
-## Expanding the ESLint configuration
+| Layer | Technology |
+|---|---|
+| Frontend | React 19, Vite 8, React Router v7 |
+| Styling | Tailwind CSS v4 |
+| AI | IBM watsonx.ai — `meta-llama/llama-3-3-70b-instruct` |
+| API proxy | Vercel Serverless Functions (`api/chat.js`) |
+| Hosting | Vercel |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Running locally
+
+Requires [Vercel CLI](https://vercel.com/docs/cli) to run the `api/chat.js` serverless function alongside the Vite dev server.
+
+```bash
+npm install
+vercel dev
+```
+
+`vercel dev` starts both the frontend and the `/api/chat` function. Plain `npm run dev` works for UI-only development but all watsonx calls will 404.
+
+## Environment variables
+
+Create a `.env.local` file in the project root (never committed):
+
+```
+WATSONX_API_KEY=your_ibm_cloud_api_key
+WATSONX_PROJECT_ID=your_watsonx_project_id
+WATSONX_URL=https://ca-tor.ml.cloud.ibm.com
+```
+
+These are read exclusively by `api/chat.js` on the server. They are never exposed to the client bundle.
+
+In production, set them in the Vercel dashboard under **Project → Settings → Environment Variables**.
+
+## Data
+
+`src/data/resources.json` is the verified resource database. Every entry is manually checked from the source website before being added — no AI-generated entries, ever. The `last_verified` field on each resource is visible to users in the UI.
