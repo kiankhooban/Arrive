@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { UserBubble, AIBubble, LoadingBubble } from './MessageBubble';
+import DemoFallback from './DemoFallback';
 import resources from '../data/resources.json';
 
 /* ---------- Icons ---------- */
@@ -244,13 +245,7 @@ export default function ChatBox({
       setStreamingText('');
       setMessages((prev) => [
         ...prev,
-        {
-          id: Date.now(),
-          role: 'ai',
-          error: true,
-          blocks: buildFallbackBlocks(filteredResources),
-          rawText: '',
-        },
+        { id: Date.now(), role: 'ai', error: true, rawText: '' },
       ]);
     }, 15000);
 
@@ -295,13 +290,7 @@ export default function ChatBox({
       setStreamingText('');
       setMessages((prev) => [
         ...prev,
-        {
-          id: Date.now(),
-          role: 'ai',
-          error: true,
-          blocks: buildFallbackBlocks(filteredResources),
-          rawText: '',
-        },
+        { id: Date.now(), role: 'ai', error: true, rawText: '' },
       ]);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -342,12 +331,19 @@ export default function ChatBox({
                 if (msg.role === 'user') {
                   return <UserBubble key={msg.id} text={msg.text} />;
                 }
+                if (msg.error) {
+                  return (
+                    <DemoFallback
+                      key={msg.id}
+                      filteredResources={filteredResources}
+                      onRetry={handleRetry}
+                    />
+                  );
+                }
                 return (
                   <AIBubble
                     key={msg.id}
                     blocks={msg.blocks ?? []}
-                    error={msg.error}
-                    onRetry={msg.error ? handleRetry : undefined}
                   />
                 );
               })}
@@ -410,21 +406,3 @@ export default function ChatBox({
   );
 }
 
-/* ---------- Fallback blocks for error/timeout state ---------- */
-function buildFallbackBlocks(filteredResources) {
-  const housing = filteredResources.find((r) => r.categories.includes('housing'));
-  const legal = filteredResources.find((r) => r.categories.includes('legal_aid'));
-  const fallbacks = [housing, legal].filter(Boolean);
-  const cards = fallbacks.length > 0 ? fallbacks : filteredResources.slice(0, 2);
-
-  const blocks = [
-    {
-      type: 'text',
-      content:
-        "I'm having trouble reaching the service right now. Here are two verified resources that match your situation — please follow up with them directly.",
-    },
-    ...cards.map((r) => ({ type: 'resource', resource: r })),
-  ];
-
-  return blocks;
-}

@@ -20,11 +20,12 @@ function CompassIcon() {
   );
 }
 
-export default function Navbar() {
+export default function Navbar({ wide = false }) {
+  const maxW = wide ? 'max-w-6xl' : 'max-w-3xl';
   return (
     <header className="border-b border-stone-200 bg-stone-50">
       <nav
-        className="mx-auto flex max-w-3xl items-center justify-between px-6 py-5"
+        className={`mx-auto flex ${maxW} items-center justify-between px-6 py-5`}
         aria-label="Primary"
       >
         <Link
