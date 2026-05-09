@@ -20,8 +20,10 @@ with PLAN.md, PLAN.md wins.
 
 ## Tech Stack
 - React + Vite
-- Tailwind CSS (custom config — use design tokens below, never default values)
-- React Router v6
+- Tailwind CSS v4 — tokens configured via @theme {} in src/index.css. 
+- Do NOT create tailwind.config.js — it is ignored in v4.
+- vite.config.js must import and use @tailwindcss/vite plugin.
+- React Router v7 (react-router-dom 7.x)
 - Vercel serverless function for watsonx proxy (api/chat.js)
 - IBM watsonx.ai (meta-llama/llama-3-3-70b-instruct)
 - SSE streaming on watsonx responses, forwarded through to the client
@@ -165,19 +167,23 @@ Rules:
 7. Never ask for personal identifying information.
 8. Do not mention CBSA, IRCC enforcement, or immigration consequences."
 
-## Design Tokens (Always Use These — Never Default Tailwind Values)
-colors:
-  teal: '#0F766E'         ← primary color, buttons, user bubbles
-  amber: '#F59E0B'        ← accent, badges, highlights
-  background: '#FAFAF8'   ← page background
-  surface: '#FFFFFF'      ← cards, AI message bubbles
-  text-primary: '#1A1A1A'
-  text-secondary: '#6B7280'
-borderRadius:
-  card: '16px'
-  button: '8px'
-fontFamily:
-  sans: ['Inter', 'sans-serif']
+## Design Tokens
+The designer used native Tailwind v4 classes. No @theme block needed.
+See /design-reference/design-decisions.md §1 for the full token table.
+Quick reference:
+- Background: bg-stone-50
+- Surface/cards: bg-white
+- Primary: bg-teal-700 / text-teal-700
+- Category pills: bg-amber-100 text-amber-800 (NOT amber-500 with text)
+- Text: text-neutral-900 (primary), text-gray-500 (secondary)
+- Borders: border-stone-200
+
+src/index.css must contain:
+  @import "tailwindcss";
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  body { font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+
+No tailwind.config.js. No @theme.
 
 ## Accessibility Requirements (Hard Requirements, Not Nice-to-Have)
 - Mobile-first responsive design with 360px minimum breakpoint
@@ -189,6 +195,22 @@ fontFamily:
 - Color is never the only signal (badges have text, not just color)
 
 ## Page Specs
+
+
+## Design Reference
+The UI was designed in Claude artifacts before implementation. Reference 
+files live in /design-reference/:
+- landing.html, onboarding.html, chat.html (or similar names) — 
+  exported from Claude Design as HTML prototypes. Claude Design 
+  outputs HTML, not JSX. Treat these as visual reference only — 
+  match the layout, spacing, and component structure when building 
+  React components, but do not copy the HTML directly.
+- design-decisions.md — typography, spacing, and pattern notes
+
+When implementing components, match the design reference closely. The 
+design tokens, spacing rhythm, and component structure have already been 
+decided — your job is to integrate them into the real app architecture, 
+not to redesign.
 
 ### Landing.jsx
 - Navbar: "Arrive" logo left, nothing on right

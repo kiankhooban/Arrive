@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Arrive — Find the support you need, in Canada.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  html, body { font-family: 'Inter', system-ui, sans-serif; }
+  /* Only used to ensure Tailwind's font-sans uses Inter; no custom utilities. */
+  .font-sans { font-family: 'Inter', system-ui, sans-serif; }
+</style>
+</head>
+<body class="bg-stone-50 text-neutral-900 font-sans antialiased">
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState } = React;
+
+/* ---------- Icons (small, simple, from lucide — drawn by professionals) ---------- */
+const Icon = ({ d, size = 20, stroke = 1.75, className = "" }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={stroke}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    aria-hidden="true"
+  >
+    {d}
+  </svg>
+);
+
+const ShieldCheck = (props) => (
+  <Icon
+    {...props}
+    d={<>
+      <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+      <path d="m9 12 2 2 4-4" />
+    </>}
+  />
+);
+
+const Sparkle = (props) => (
+  <Icon {...props} d={<>
+    <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+  </>} />
+);
+
+const ArrowRight = (props) => (
+  <Icon {...props} d={<><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></>} />
+);
+
+const ListChecks = (props) => (
+  <Icon {...props} d={<>
+    <path d="m3 17 2 2 4-4" />
+    <path d="m3 7 2 2 4-4" />
+    <path d="M13 6h8" />
+    <path d="M13 12h8" />
+    <path d="M13 18h8" />
+  </>} />
+);
+
+const Compass = (props) => (
+  <Icon {...props} d={<>
+    <path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z" />
+    <circle cx="12" cy="12" r="10" />
+  </>} />
+);
+
+const ExternalLink = (props) => (
+  <Icon {...props} d={<>
+    <path d="M15 3h6v6" />
+    <path d="M10 14 21 3" />
+    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+  </>} />
+);
+
+/* ---------- Wordmark ---------- */
+const Wordmark = () => (
+  <a
+    href="#"
+    className="inline-flex items-center gap-2 rounded-lg px-1 py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-700 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-50"
+    aria-label="Arrive — home"
+  >
+    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-700 text-white">
+      <Compass size={18} stroke={2} />
+    </span>
+    <span className="text-lg font-semibold tracking-tight text-neutral-900">Arrive</span>
+  </a>
+);
+
+/* ---------- Navbar ---------- */
+const Navbar = () => (
+  <header className="border-b border-stone-200 bg-stone-50">
+    <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5" aria-label="Primary">
+      <Wordmark />
+      {/* Right side intentionally empty per spec */}
+      <span className="sr-only">No additional navigation items.</span>
+    </nav>
+  </header>
+);
+
+/* ---------- Hero ---------- */
+const Hero = () => (
+  <section className="mx-auto max-w-6xl px-6 pt-20 pb-12 sm:pt-28 sm:pb-16" aria-labelledby="hero-heading">
+    <div className="max-w-3xl">
+      <span className="inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white px-3 py-1 text-xs font-medium text-gray-500">
+        <span className="h-1.5 w-1.5 rounded-full bg-amber-500" aria-hidden="true"></span>
+        For newcomers to Canada
+      </span>
+      <h1
+        id="hero-heading"
+        className="mt-6 text-4xl font-semibold leading-tight tracking-tight text-neutral-900 sm:text-5xl sm:leading-tight md:text-6xl md:leading-tight"
+      >
+        Find the support you need, in Canada.
+      </h1>
+      <p className="mt-6 max-w-2xl text-lg leading-relaxed text-gray-500 sm:text-xl">
+        Tell us your situation and we'll connect you with verified settlement services — instantly.
+      </p>
+      <div className="mt-10 flex flex-wrap items-center gap-4">
+        <a
+          href="#get-started"
+          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-teal-700 px-6 py-3 text-base font-medium text-white shadow-sm transition hover:bg-teal-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-700 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-50"
+        >
+          Get Started
+          <ArrowRight size={18} />
+        </a>
+        <span className="text-sm text-gray-500">Free · No account required</span>
+      </div>
+    </div>
+  </section>
+);
+
+/* ---------- Privacy statement (hero-adjacent, weighty) ---------- */
+const PrivacyStatement = () => (
+  <section className="mx-auto max-w-6xl px-6 pb-12" aria-labelledby="privacy-heading">
+    <div className="flex flex-col gap-5 rounded-2xl border border-stone-200 bg-white p-6 shadow-sm sm:flex-row sm:items-start sm:gap-6 sm:p-8">
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-teal-50 text-teal-700">
+        <ShieldCheck size={24} />
+      </div>
+      <div className="flex-1">
+        <p id="privacy-heading" className="text-xs font-semibold uppercase tracking-wider text-teal-700">
+          Your privacy
+        </p>
+        <p className="mt-2 text-lg font-medium leading-relaxed text-neutral-900 sm:text-xl">
+          Arrive does not log your conversations or share your information with IRCC, CBSA, or any government agency.
+        </p>
+        <p className="mt-3 text-sm leading-relaxed text-gray-500">
+          You can use Arrive without signing in. Your messages stay on your device.
+        </p>
+      </div>
+    </div>
+  </section>
+);
+
+/* ---------- How it works ---------- */
+const StepCard = ({ number, title, description, icon }) => (
+  <article className="flex h-full flex-col rounded-2xl border border-stone-200 bg-white p-6 shadow-sm sm:p-8">
+    <div className="flex items-center justify-between">
+      <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-stone-100 text-teal-700">
+        {icon}
+      </span>
+      <span className="font-mono text-xs font-medium tracking-wider text-gray-500">
+        {number}
+      </span>
+    </div>
+    <h3 className="mt-6 text-xl font-semibold tracking-tight text-neutral-900">
+      {title}
+    </h3>
+    <p className="mt-3 text-base leading-relaxed text-gray-500">
+      {description}
+    </p>
+  </article>
+);
+
+const HowItWorks = () => (
+  <section className="mx-auto max-w-6xl px-6 py-12 sm:py-16" aria-labelledby="how-heading">
+    <div className="max-w-2xl">
+      <p className="text-sm font-medium text-teal-700">How it works</p>
+      <h2 id="how-heading" className="mt-2 text-3xl font-semibold tracking-tight text-neutral-900 sm:text-4xl">
+        Three steps. A few minutes. Real help.
+      </h2>
+    </div>
+    <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
+      <StepCard
+        number="01"
+        icon={<ListChecks size={20} />}
+        title="Tell us about yourself"
+        description="Answer 3 quick questions about your location, needs, and immigration status."
+      />
+      <StepCard
+        number="02"
+        icon={<Sparkle size={20} />}
+        title="Get matched"
+        description="Our AI finds settlement services that fit your situation, drawing only from verified sources."
+      />
+      <StepCard
+        number="03"
+        icon={<ExternalLink size={20} />}
+        title="Take action"
+        description="Open direct links to real services — phone numbers, websites, and walk-in locations."
+      />
+    </div>
+  </section>
+);
+
+/* ---------- Trust bar ---------- */
+const TrustBar = () => (
+  <section className="mx-auto max-w-6xl px-6 pb-16" aria-label="Trust and partners">
+    <div className="flex flex-col items-start justify-between gap-4 border-t border-stone-200 pt-8 sm:flex-row sm:items-center">
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-gray-500">
+        <span className="inline-flex items-center gap-2">
+          <span className="h-1.5 w-1.5 rounded-full bg-teal-700" aria-hidden="true"></span>
+          Powered by IBM watsonx.ai
+        </span>
+        <span className="hidden h-4 w-px bg-stone-200 sm:inline-block" aria-hidden="true"></span>
+        <span className="inline-flex items-center gap-2">
+          <span className="h-1.5 w-1.5 rounded-full bg-amber-500" aria-hidden="true"></span>
+          Aligned with UN SDG 10 — Reduced Inequalities
+        </span>
+      </div>
+      <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">
+        Verified resources only
+      </span>
+    </div>
+  </section>
+);
+
+/* ---------- Footer ---------- */
+const Footer = () => (
+  <footer className="border-t border-stone-200 bg-stone-50">
+    <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-3 px-6 py-8 text-sm text-gray-500 sm:flex-row sm:items-center">
+      <Wordmark />
+      <p>Built for IBM Z × UNSA Hackathon 2026</p>
+    </div>
+  </footer>
+);
+
+/* ---------- Page ---------- */
+const Landing = () => (
+  <main className="min-h-screen bg-stone-50">
+    <Navbar />
+    <Hero />
+    <PrivacyStatement />
+    <HowItWorks />
+    <TrustBar />
+    <Footer />
+  </main>
+);
+
+ReactDOM.createRoot(document.getElementById("root")).render(<Landing />);
+</script>
+</body>
+</html>

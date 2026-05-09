@@ -160,7 +160,7 @@ DevTools Lighthouse before submission — target accessibility score
 of 95+. SDG 10 project means a11y is part of the impact story, not 
 a checklist item.
 
-## Design Tokens (tailwind.config.js)
+## Design Tokens (Tailwind v4 — configured in src/index.css via @theme {})
 colors:
   teal: '#0F766E'
   amber: '#F59E0B'  
